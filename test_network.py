@@ -9,7 +9,7 @@ Code author: Bharat
 
 import tensorflow as tf
 import numpy as np
-import cPickle as pkl
+import pickle as pkl
 
 from network.base_network import PoseShapeOffsetModel
 from config_ver1 import config, NUM, IMG_SIZE, FACE
@@ -86,7 +86,7 @@ def load_model(model_dir):
     }
     latest_cpkt = tf.train.latest_checkpoint(model_dir)
     if latest_cpkt:
-        print('Using latest checkpoint at ' + latest_cpkt)
+        print(('Using latest checkpoint at ' + latest_cpkt))
     else:
         print('No pre-trained model found')
     checkpoint = tf.train.Checkpoint(**model_objects)
@@ -129,7 +129,7 @@ def fine_tune(m, inp, out, display = False):
                 continue
             stri = stri + k + ' :{}, '.format(lo[k])
         stri = stri + 'J_2d' + ' :{}'.format(J_2d / NUM)
-        print('Ep: {}, {}'.format(ep, stri))
+        print(('Ep: {}, {}'.format(ep, stri)))
 
     vars.extend(['pca_comp', 'betas', 'latent_code_offset_ShapeMerged', 'byPass'])
     losses_2d['laplacian'] = 5* 10 ** 5.
@@ -153,7 +153,7 @@ def fine_tune(m, inp, out, display = False):
                 continue
             stri = stri + k + ' :{}, '.format(lo[k])
         stri = stri + 'J_2d' + ' :{}'.format(J_2d/NUM)
-        print('Ep: {}, {}'.format(ep, stri))
+        print(('Ep: {}, {}'.format(ep, stri)))
 
     return m
 

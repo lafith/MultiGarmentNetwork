@@ -3,11 +3,11 @@
 
 import numpy as np
 import chumpy as ch
-import cPickle as pkl
+import pickle as pkl
 import scipy.sparse as sp
 from chumpy.ch import Ch
-from posemapper import posemap, Rodrigues
-from serialization import backwards_compatibility_replacements
+from .posemapper import posemap, Rodrigues
+from .serialization import backwards_compatibility_replacements
 
 from lib.geometry import laplacian, get_hres
 from lib.ch import sp_dot
@@ -139,4 +139,4 @@ if __name__ == '__main__':
     mv = MeshViewer()
     mv.set_static_meshes([Mesh(smpl.r, smpl.f)])
 
-    raw_input("Press Enter to continue...")
+    input("Press Enter to continue...")

@@ -11,7 +11,7 @@ Shout out to Chaitanya for intersection removal code
 
 from psbody.mesh import Mesh, MeshViewers
 import numpy as np
-import cPickle as pkl
+import pickle as pkl
 from utils.smpl_paths import SmplPaths
 from lib.ch_smpl import Smpl
 from utils.interpenetration_ind import remove_interpenetration_fast
@@ -78,7 +78,7 @@ def dress(smpl_tgt, body_src, garment, vert_inds, garment_tex = None):
 
     ## Re-pose
     ret_posed = pose_garment(ret, vert_inds, tgt_params)
-    body_tgt_posed = pose_garment(body_tgt, range(len(body_tgt.v)), tgt_params)
+    body_tgt_posed = pose_garment(body_tgt, list(range(len(body_tgt.v))), tgt_params)
 
     ## Remove intersections
     ret_posed_interp = remove_interpenetration_fast(ret_posed, body_tgt_posed)

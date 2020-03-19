@@ -9,7 +9,7 @@ import dirt
 from dirt import matrices
 sys.stderr.write('Using dirt renderer.\n')
 
-from lighting import split_vertices_by_face, diffuse_directional, vertex_normals_pre_split, diffuse_point
+from .lighting import split_vertices_by_face, diffuse_directional, vertex_normals_pre_split, diffuse_point
 
 def perspective_projection(f, c, w, h, near=0.1, far=10., name=None):
     """Constructs a perspective projection matrix.

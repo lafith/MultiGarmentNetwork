@@ -6,13 +6,13 @@ Specify joint types:
 Note: To get original smpl joints, use self.J_transformed
 """
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+
+
+
 
 import os
 import numpy as np
-import cPickle as pickle
+import pickle as pickle
 
 import tensorflow as tf
 # tf.enable_eager_execution()

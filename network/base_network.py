@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-import cPickle as pkl
+import pickle as pkl
 import matplotlib.pyplot as plt
 
 from config_ver1 import config, NUM, IMG_SIZE, FACE
@@ -19,7 +19,7 @@ from smpl.batch_lbs import batch_rodrigues
 from smpl.batch_smpl import SMPL
 from mesh.geometry import compute_laplacian_diff
 
-from custom_layers import PCA_, NameLayer, Scatter_
+from .custom_layers import PCA_, NameLayer, Scatter_
 
 def reprojection(ytrue, ypred):
     b_size = tf.shape(ypred)[0]
@@ -140,7 +140,7 @@ class SingleImageNet(tf.keras.Model):
         self.concat = Concatenate()
 
     def append_coord(self, x):
-        a, b = tf.meshgrid(range(K.int_shape(x)[1]), range(K.int_shape(x)[2]))
+        a, b = tf.meshgrid(list(range(K.int_shape(x)[1])), list(range(K.int_shape(x)[2])))
         a = tf.cast(a, tf.float32) / K.int_shape(x)[1]
         b = tf.cast(b, tf.float32) / K.int_shape(x)[2]
         a = tf.tile(tf.expand_dims(tf.stack([a, b], axis=-1), 0), [K.int_shape(x)[0], 1, 1, 1])
@@ -224,7 +224,7 @@ class BaseModel(tf.keras.Model):
         if self.model is None:
             raise Exception("You have to build the model first.")
 
-        print("Loading model checkpoint {} ...\n".format(checkpoint_path))
+        print(("Loading model checkpoint {} ...\n".format(checkpoint_path)))
         self.model.load_weights(checkpoint_path)
         print("Model loaded")
 
@@ -450,8 +450,8 @@ class PoseShapeOffsetModel(BaseModel):
                         opt_var.append(x)
                         opt_grad.append(g)
                 self.optimizer.apply_gradients(
-                    zip(opt_grad, opt_var))
+                    list(zip(opt_grad, opt_var)))
             else:
                 self.optimizer.apply_gradients(
-                    zip(grad, self.trainable_variables))
+                    list(zip(grad, self.trainable_variables)))
         return loss

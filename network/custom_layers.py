@@ -40,7 +40,7 @@ class Scatter_(Layer):
         super(Scatter_, self).__init__(**kwargs)
         from scipy.sparse import coo_matrix
         self.vs = vs
-        q = coo_matrix( (np.ones((len(vs),)), (vs, range(len(vs)))), shape=(NVERTS, len(vs)), dtype = np.float32 )
+        q = coo_matrix( (np.ones((len(vs),)), (vs, list(range(len(vs))))), shape=(NVERTS, len(vs)), dtype = np.float32 )
         self.vs = sparse_to_tensor(q)
 
         self.NVERTS = NVERTS
