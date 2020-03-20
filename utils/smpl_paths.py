@@ -8,8 +8,8 @@ from utils.geometry import get_hres
 import scipy.sparse as sp
 
 ## Set your paths here
-SMPL_PATH = '/BS/RVH/work/data/smpl_models/neutral/basicModel_neutral_lbs_10_207_0_v1.0.0.pkl'
-smpl_vt_ft_path = '/BS/bharat/work/MGN_final_release/assets/smpl_vt_ft.pkl'
+SMPL_PATH = 'assets/neutral_smpl.pkl'
+smpl_vt_ft_path = 'assets/smpl_vt_ft.pkl'
 
 class SmplPaths:
     def __init__(self, project_dir='', exp_name='', gender='neutral', garment=''):
@@ -35,7 +35,7 @@ class SmplPaths:
 
     def get_hres_smpl_model_data(self):
 
-        dd = pkl.load(open(self.get_smpl_file()))
+        dd = pkl.load(open(self.get_smpl_file(), "rb"), encoding="latin1")
         backwards_compatibility_replacements(dd)
 
         hv, hf, mapping = get_hres(dd['v_template'], dd['f'])
@@ -72,7 +72,7 @@ class SmplPaths:
 
     @staticmethod
     def get_vt_ft():
-        vt, ft = pkl.load(open(smpl_vt_ft_path))
+        vt, ft = pkl.load(open(smpl_vt_ft_path, "rb"), encoding="latin1")
         return vt, ft
 
     @staticmethod

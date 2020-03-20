@@ -26,7 +26,7 @@ class Smpl(Ch):
     def on_changed(self, which):
         if 'model' in which:
             if not isinstance(self.model, dict):
-                dd = pkl.load(open(self.model))
+                dd = pkl.load(open(self.model, "rb"), encoding="latin1")
             else:
                 dd = self.model
 
