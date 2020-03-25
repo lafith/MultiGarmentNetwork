@@ -52,7 +52,7 @@ class GarmentNet(tf.keras.Model):
                            activation='tanh', name='byPass')
         self.limit_sz = Lambda(lambda z: z*0.05, name = 'limit_sz')
         # self.limit_sz = Lambda(lambda z: tf.clip_by_value(z, -0.005, 0.005), name='limit_sz')
-        self.reshape = Reshape((len(pca.mean_)/3, 3))
+        self.reshape = Reshape((len(pca.mean_)//3, 3))
 
         # self.leakyrelu = tf.keras.layers.ReLU()
 

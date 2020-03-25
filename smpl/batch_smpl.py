@@ -148,7 +148,7 @@ class SMPL(tf.keras.Model): #(object):
 
         if self.scale:
             body_height = (v_shaped_scaled[:, 2802, 1] + v_shaped_scaled[:, 6262, 1]) - (v_shaped_scaled[:, 2237, 1] + v_shaped_scaled[:, 6728, 1])
-            scale = tf.reshape(1.66 / body_height, (-1, 1, 1))
+            scale = tf.reshape(1.66 // body_height, (-1, 1, 1))
         else:
             scale = tf.reshape(tf.ones_like(v_shaped_scaled[:, 2802, 1]), (-1, 1, 1))
 
