@@ -1,10 +1,11 @@
+# default NUM=8
 NUM, IMG_SIZE, FACE = 8, 720, False
 
 config = lambda: None
 config.expName = None
 config.checkpoint_dir = None
 config.train = lambda: None
-config.train.batch_size = 4
+config.train.batch_size = 1
 config.train.lr = 0.001
 config.train.decay = 0.001
 config.train.epochs = 10

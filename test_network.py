@@ -162,7 +162,7 @@ if __name__ == "__main__":
     from os.path import exists, join, split
     from psbody.mesh import Mesh, MeshViewer, MeshViewers
 
-    os.environ['CUDA_VISIBLE_DEVICES'] = '0, 1, 2, 3'
+    # os.environ['CUDA_VISIBLE_DEVICES'] = '0, 1, 2, 3'
     conf = tf.ConfigProto()
     conf.gpu_options.allow_growth = True
     tf.enable_eager_execution(config=conf)
@@ -178,18 +178,23 @@ if __name__ == "__main__":
 
     model_dir = 'saved_model/'
     ## Load model
+    print("Load model")
     m = load_model(model_dir)
 
     ## Load test data
+    print("Load test data")
     dat = pkl.load(open('assets/test_data.pkl', "rb"), encoding="latin1")
+    dat = {k: v[:config.train.batch_size] for k, v in dat.items()}
 
     ## Get results before optimization
+    print("Get results before optimization")
     pred = get_results(m, dat)
     mv = MeshViewers((1,2), keepalive=True)
     mv[0][0].set_static_meshes(pred['garment_meshes'] + [pred['body']])
     mv[0][1].set_static_meshes([pred['body']])
 
     ## Optimize the network
+    print("Optimize the network")
     m = fine_tune(m, dat, dat, display=False)
     pred = get_results(m, dat, )
 
