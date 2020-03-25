@@ -47,8 +47,8 @@ class SMPL(tf.keras.Model): #(object):
         self.scale = scale
         self.data_type = dtype
 
-        with open(pkl_path, 'r') as f:
-            dd = pickle.load(f)
+        with open(pkl_path, 'rb') as f:
+            dd = pickle.load(f, encoding="latin1")
         # Mean template vertices
         self.v_template = tf.Variable(
             undo_chumpy(dd['v_template']),
@@ -95,7 +95,7 @@ class SMPL(tf.keras.Model): #(object):
         self.theta_is_perfect_rotmtx = theta_is_perfect_rotmtx
 
         with open(os.path.join(os.path.dirname(__file__), '../assets/hresMapping.pkl'), 'rb') as f:
-            mapping, nf = pickle.load(f)
+            mapping, nf = pickle.load(f, encoding="latin1")
 
         self.weights_hres = tf.cast(tf.Variable(np.hstack([
                 np.expand_dims(

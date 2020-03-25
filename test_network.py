@@ -55,7 +55,7 @@ def get_results(m, inp, with_pose = False):
     out = m([images, vertex_label, J_2d])
 
     with open('assets/hresMapping.pkl', 'rb') as f:
-        _, faces = pkl.load(f)
+        _, faces = pkl.load(f, encoding="latin1")
 
     pca_layers = [l.PCA_ for l in m.garmentModels]
     scatter_layers = m.scatters
@@ -168,20 +168,20 @@ if __name__ == "__main__":
     tf.enable_eager_execution(config=conf)
 
     with open('assets/hresMapping.pkl', 'rb') as f:
-        _, faces = pkl.load(f)
+        _, faces = pkl.load(f, encoding="latin1")
 
-    TEMPLATE = pkl.load(open('assets/allTemplate_withBoundaries_symm.pkl', 'rb'))
+    TEMPLATE = pkl.load(open('assets/allTemplate_withBoundaries_symm.pkl', 'rb'), encoding="latin1")
     pca_verts = {}
     for garment in config.garmentKeys:
         with open(os.path.join('assets/garment_basis_35_temp20', garment + '_param_{}_corrected.pkl'.format(config.PCA_)), 'rb') as f:
-            pca_verts[garment] = pkl.load(f)
+            pca_verts[garment] = pkl.load(f, encoding="latin1")
 
     model_dir = 'saved_model/'
     ## Load model
     m = load_model(model_dir)
 
     ## Load test data
-    dat = pkl.load(open('assets/test_data.pkl'))
+    dat = pkl.load(open('assets/test_data.pkl', "rb"), encoding="latin1")
 
     ## Get results before optimization
     pred = get_results(m, dat)
