@@ -27,15 +27,34 @@ Download and install mesh packages for visualization: https://github.com/MPI-IS/
 This repo contains code to run pretrained MGN model.
 Download saved weights from : https://1drv.ms/u/s!AohQYySSg0mRmju7Of80mQ09wR5-?e=IbbHQ1
 
+`test_network.py` runs: images + 2d joints --> body + 3d garments.
+
 ## Data preparation
 
 If you want to process your own data, some pre-processing steps are needed:
 
-1. Crop your images to 720x720. In our testing setup we used roughly centerd subjects at a distance of around 2m from the camer.
+1. Crop your images to 720x720. In our testing setup we used roughly centerd subjects at a distance of around 2m from the camera.
 2. Run semantic segmentation on images. We used [PGN semantic segmentation](https://github.com/Engineering-Course/CIHP_PGN) and manual correction. Segment garments, Pants (65, 0, 65), Short-Pants (0, 65, 65), Shirt (145, 65, 0), T-Shirt (145, 0, 65) and Coat (0, 145, 65).
 3. Run [OpenPose](https://github.com/CMU-Perceptual-Computing-Lab/openpose) body_25 for 2D joints.
 
 Semantic segmentation and OpenPose keypoints form the input to MGN. See `assets/test_data.pkl` folder for sample data.
+
+
+### Description of test_data.pkl
+There is a batch size of 2 in this sample data, hence all inputs start with the shape (2, ...)
+
+Initial input for a forward pass is:
+
+1. `image_x` Segmented images of a person
+2. `J_2d_x` 2D joint detections from openpose
+3. `vertexlabel` - this tells MGN which SMPL vertex belongs to which garment and can be generated using the garment template provided in `assets/allTemplate_withBoundaries_symm.pkl`. See [comment](https://github.com/bharat-b7/MultiGarmentNetwork/issues/8#issuecomment-576364491)
+
+To fine tune MGN at test time to get more person specific details, you need:
+
+4. `rendered` - 2D silhouette for each input frame
+5. `laplactian` - laplacian regularization (this is just a zero vector to smoothen the output)
+
+
 
 ## Texture
 
