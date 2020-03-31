@@ -46,7 +46,7 @@ There is a batch size of 2 in this sample data, hence all inputs start with the 
 Initial input for a forward pass is:
 
 1. `image_x` Segmented images of a person
-2. `J_2d_x` 2D joint detections from openpose
+2. `J_2d_x` 2D joint detections from openpose. Make sure to normalize the output ([here is code](https://github.com/bharat-b7/MultiGarmentNetwork/issues/12#issuecomment-582240961)).
 3. `vertexlabel` - this tells MGN which SMPL vertex belongs to which garment and can be generated using the garment template provided in `assets/allTemplate_withBoundaries_symm.pkl`. See [comment](https://github.com/bharat-b7/MultiGarmentNetwork/issues/8#issuecomment-576364491)
 
 To fine tune MGN at test time to get more person specific details, you need:
