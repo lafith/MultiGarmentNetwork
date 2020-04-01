@@ -107,7 +107,7 @@ def fine_tune(m, inp, out, display = False):
     ## First optimize pose then other stuff
     vars = []
     losses_2d = {}
-    epochs = 50
+    epochs = config.train.epochs
     vars = ['pose_trans']
     losses_2d['rendered'] = 5 * 10. ** 3
     losses_2d['laplacian'] = 5 * 10 ** 5.
