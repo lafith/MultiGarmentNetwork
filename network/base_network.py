@@ -429,9 +429,9 @@ class PoseShapeOffsetModel(BaseModel):
         return loss
 
     def train(self, inp_dict, gt_dict, loss_dict, vars2opt=None):
-        images = [inp_dict['image_{}'.format(i)].astype('float32') for i in range(NUM)]
+        images = [inp_dict[f'image_{i}'].astype('float32') for i in range(NUM)]
         vertex_label = inp_dict['vertexlabel'].astype('int64')
-        J_2d = [inp_dict['J_2d_{}'.format(i)].astype('float32') for i in range(NUM)]
+        J_2d = [inp_dict[f'J_2d_{i}'].astype('float32') for i in range(NUM)]
 
         with tf.GradientTape() as gtape:
             out_dict = self.call([images, vertex_label, J_2d])
