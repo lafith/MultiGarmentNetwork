@@ -23,6 +23,13 @@ color_map = {
     "Pants": (65, 0, 65),
     "ShortPants": (0, 65, 65)
 }
+numeric_map = {
+    "Pants": 1,
+    "ShortPants": 2,
+    "ShirtNoCoat": 3,
+    "TShiftNoCoat": 4,
+    "LongCoat": 5
+}
 
 
 @dataclass
@@ -88,15 +95,15 @@ def vertex_label_from_cloth(file_path):
     # searches the img for any occurences of the specified pixel value.
     # if found, remember that we found that garment item
     for key, color in color_map.items():
-        indices = np.where(np.all(arr == color, axis=-1))
+        indices = np.where(np.all(arr == color, axis=-1))[0]
         if len(indices) > 0:
             found_items.append(key)
 
-    if len(found_items) == 0:
-        print("Warning: no vertexlabel found for", file_path)
+    # from https://github.com/bharat-b7/MultiGarmentNetwork/issues/16#issuecomment-608986126
+    vertexlabel = np.zeros((1, 27554, 1))
+    for garment_name in found_items:
+        vertexlabel[np.where(TEMPLATE[garment_name][1])[0]] = numeric_map[garment_name]
 
-    vertexlabel = [TEMPLATE[garment][1] for garment in found_items]
-    vertexlabel = np.stack(vertexlabel, axis=-1)  # stack along the last axis
     return vertexlabel
 
 
@@ -183,7 +190,7 @@ if __name__ == "__main__":
     loader = DataLoader(ds)
 
     for batch in tqdm(loader, total=len(loader)):
-        batch = {k: v.numpy() if isinstance(v, torch.Tensor) else v for k, v in
+        batch = {k: (v.numpy() if isinstance(v, torch.Tensor) else v) for k, v in
                  batch.items()}
         # print({k: v.shape if isinstance(v, np.ndarray) else v for k, v in batch.items()})
         paths_batch = batch["image_0_path"]
@@ -191,9 +198,12 @@ if __name__ == "__main__":
         if not np.any(batch["J_2d_0"]):
             tqdm.write("Skipping, no joints " + paths_batch[0])
         elif batch["J_2d_0"].shape != (1, 25, 3):
-            tqdm.write("Skipping, joints wrong shape " + str(batch["J_2d_0"].shape) + " " + paths_batch[0])
+            tqdm.write(
+                "Skipping, joints wrong shape " + str(batch["J_2d_0"].shape) + " " +
+                paths_batch[0])
         else:
             tqdm.write("Running on " + paths_batch[0])
+
             pred = get_results(m, batch)
             # iterate over batch
             for i, instance in enumerate(pred):
