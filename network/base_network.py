@@ -306,8 +306,8 @@ class PoseShapeOffsetModel(BaseModel):
 
         with tf.device('/gpu:0'):
             lat_codes = [self.top_([q, j]) for q, j in zip(images, Js)]
-            latent_code_offset = self.avg([q[0] for q in lat_codes])
-            latent_code_betas = self.avg([q[1] for q in lat_codes])
+            latent_code_offset = self.avg([q[0] for q in lat_codes]) if (len(lat_codes) > 1 ) else lat_codes[0][0]
+            latent_code_betas = self.avg([q[1] for q in lat_codes]) if (len(lat_codes) > 1 ) else lat_codes[0][1]
             latent_code_pose = [tf.concat([q[1], x], axis=-1) for q, x in zip(lat_codes, Js)]
 
         with tf.device('/gpu:0'):

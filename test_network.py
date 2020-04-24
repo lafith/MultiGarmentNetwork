@@ -11,6 +11,7 @@ import tensorflow as tf
 import numpy as np
 import pickle as pkl
 
+from psbody.mesh import Mesh
 from network.base_network import PoseShapeOffsetModel
 from config_ver1 import config, NUM, IMG_SIZE, FACE
 
@@ -179,7 +180,7 @@ def fine_tune(m, inp, out, display=False):
 if __name__ == "__main__":
     import os
     from os.path import exists, join, split
-    from psbody.mesh import Mesh, MeshViewer, MeshViewers
+    from psbody.mesh import MeshViewer, MeshViewers
 
     # os.environ['CUDA_VISIBLE_DEVICES'] = '0, 1, 2, 3'
     conf = tf.ConfigProto()

@@ -100,7 +100,7 @@ def vertex_label_from_cloth(file_path):
             found_items.append(key)
 
     # from https://github.com/bharat-b7/MultiGarmentNetwork/issues/16#issuecomment-608986126
-    vertexlabel = np.zeros((1, 27554, 1))
+    vertexlabel = np.zeros((27554, 1))
     for garment_name in found_items:
         vertexlabel[np.where(TEMPLATE[garment_name][1])[0]] = numeric_map[garment_name]
 
@@ -187,7 +187,7 @@ if __name__ == "__main__":
             load_func=load_openpose_from_file(resolution=(192, 256))
         ),
     )
-    loader = DataLoader(ds)
+    loader = DataLoader(ds, batch_size=1)
 
     for batch in tqdm(loader, total=len(loader)):
         batch = {k: (v.numpy() if isinstance(v, torch.Tensor) else v) for k, v in
@@ -203,11 +203,12 @@ if __name__ == "__main__":
                 paths_batch[0])
         else:
             tqdm.write("Running on " + paths_batch[0])
-
+            # pred is a dict containing "garment_meshes", "body", "pca_mesh". TODO: save each part of this dict. actually we should just pickle the whole thing
             pred = get_results(m, batch)
-            # iterate over batch
-            for i, instance in enumerate(pred):
-                sample_id = os.path.splitext(paths_batch[i][top + 1:])[0]
-                out_path = os.path.join(normpath(args.out), sample_id + ".pkl")
-                with open(out_path, "wb") as f:
-                    pickle.dump(pred, f)
+            # save
+            the_path = paths_batch[0]
+            sample_id = os.path.splitext(the_path[top:])[0].lstrip("/")
+            out_path = os.path.join(normpath(args.out), sample_id + ".pkl")
+            os.makedirs(os.path.dirname(out_path), exist_ok=True)
+            with open(out_path, "wb") as f:
+                pickle.dump(pred, f)
