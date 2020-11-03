@@ -15,7 +15,7 @@ import pickle as pkl
 from utils.smpl_paths import SmplPaths
 from lib.ch_smpl import Smpl
 from utils.interpenetration_ind import remove_interpenetration_fast
-from os.path import join, split
+from os.path import join, split, abspath
 from glob import glob
 
 def load_smpl_from_file(file):
@@ -88,7 +88,7 @@ def dress(smpl_tgt, body_src, garment, vert_inds, garment_tex = None):
 
     return ret_posed_interp
 
-path = 'Multi-Garment_dataset/'
+path = abspath('../dataset')
 all_scans = glob(path + '*')
 garment_classes = ['Pants', 'ShortPants', 'ShirtNoCoat', 'TShirtNoCoat', 'LongCoat']
 gar_dict = {}
@@ -107,6 +107,7 @@ if __name__ == '__main__':
 
     ## Choose any garmet type as source
     garment_type = 'TShirtNoCoat'
+
     index = np.random.randint(0, len(gar_dict[garment_type]))   ## Randomly pick from the digital wardrobe
     path = split(gar_dict[garment_type][index])[0]
 

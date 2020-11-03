@@ -4,11 +4,13 @@ from psbody.mesh import Mesh
 from os.path import join
 import pickle as pkl
 from lib.serialization import backwards_compatibility_replacements, load_model
-from utils.geometry import get_hres
+from .geometry import get_hres
 import scipy.sparse as sp
 
 ## Set your paths here
-SMPL_PATH = 'assets/neutral_smpl.pkl'
+SMPL_PATH = 'assets/basicModel_neutral_lbs_10_207_0_v1.0.0.pkl'
+#SMPL_PATH = 'assets/basicmodel_m_lbs_10_207_0_v1.0.0.pkl'
+#SMPL_PATH = 'assets/basicModel_f_lbs_10_207_0_v1.0.0.pkl'
 smpl_vt_ft_path = 'assets/smpl_vt_ft.pkl'
 
 class SmplPaths:

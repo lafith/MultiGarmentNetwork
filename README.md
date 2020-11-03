@@ -3,13 +3,19 @@ Repo for **"Multi-Garment Net: Learning to Dress 3D People from Images, ICCV'19"
 
 Link to paper: https://arxiv.org/abs/1908.06903
 
+### Update 01 May 2020:
+Added more garments here [Part-2](https://datasets.d2.mpi-inf.mpg.de/MultiGarmentNetwork/Multi-Garmentdataset_02.zip)
+
 ## Dress SMPL body model with our Digital Wardrobe
 
-1. Download digital wardrobe: https://datasets.d2.mpi-inf.mpg.de/MultiGarmentNetwork/Multi-Garmentdataset.zip
+1. Download digital wardrobe: [Part-1](https://datasets.d2.mpi-inf.mpg.de/MultiGarmentNetwork/Multi-Garmentdataset.zip) and [Part-2](https://datasets.d2.mpi-inf.mpg.de/MultiGarmentNetwork/Multi-Garmentdataset_02.zip).
 This dataset contains scans, SMPL registration, texture_maps, segmentation_maps and multi-mesh registered garments.
-2. visualize_scan.py: Load scan and visualize texture and segmentation
-3. visualize_garments.py: Visualize random garment and coresponding SMPL model
-4. dress_SMPL.py: Load random garment and dress desired SMPL body with it
+
+2. visualize_scan.py: Load scan and visualize texture and segmentation.
+
+3. visualize_garments.py: Visualize random garment and coresponding SMPL model.
+
+4. dress_SMPL.py: Load random garment and dress desired SMPL body with it.
 
 
 ## Pre-requisites for running MGN
@@ -25,36 +31,17 @@ Download and install DIRT: https://github.com/pmh47/dirt.
 Download and install mesh packages for visualization: https://github.com/MPI-IS/mesh
 
 This repo contains code to run pretrained MGN model.
-Download saved weights from : https://1drv.ms/u/s!AohQYySSg0mRmju7Of80mQ09wR5-?e=IbbHQ1
-
-`test_network.py` runs: images + 2d joints --> body + 3d garments.
+Download saved weights from : https://datasets.d2.mpi-inf.mpg.de/MultiGarmentNetwork/weights.zip
 
 ## Data preparation
 
 If you want to process your own data, some pre-processing steps are needed:
 
-1. Crop your images to 720x720. In our testing setup we used roughly centerd subjects at a distance of around 2m from the camera.
+1. Crop your images to 720x720. In our testing setup we used roughly centerd subjects at a distance of around 2m from the camer.
 2. Run semantic segmentation on images. We used [PGN semantic segmentation](https://github.com/Engineering-Course/CIHP_PGN) and manual correction. Segment garments, Pants (65, 0, 65), Short-Pants (0, 65, 65), Shirt (145, 65, 0), T-Shirt (145, 0, 65) and Coat (0, 145, 65).
 3. Run [OpenPose](https://github.com/CMU-Perceptual-Computing-Lab/openpose) body_25 for 2D joints.
 
 Semantic segmentation and OpenPose keypoints form the input to MGN. See `assets/test_data.pkl` folder for sample data.
-
-
-### Description of test_data.pkl
-There is a batch size of 2 in this sample data, hence all inputs start with the shape (2, ...)
-
-Initial input for a forward pass is:
-
-1. `image_x` Segmented images of a person
-2. `J_2d_x` 2D joint detections from openpose. Make sure to normalize the output ([here is code](https://github.com/bharat-b7/MultiGarmentNetwork/issues/12#issuecomment-582240961)).
-3. `vertexlabel` - this tells MGN which SMPL vertex belongs to which garment and can be generated using the garment template provided in `assets/allTemplate_withBoundaries_symm.pkl`. See [comment](https://github.com/bharat-b7/MultiGarmentNetwork/issues/8#issuecomment-576364491)
-
-To fine tune MGN at test time to get more person specific details, you need:
-
-4. `rendered` - 2D silhouette for each input frame
-5. `laplactian` - laplacian regularization (this is just a zero vector to smoothen the output)
-
-
 
 ## Texture
 
@@ -86,10 +73,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 You understand and agree that the authors are under no obligation to provide either maintenance services, update services, notices of latent defects, or corrections of defects with regard to the Software. The authors nevertheless reserve the right to update, modify, or discontinue the Software at any time.
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. You agree to cite the **Multi-Garment Net: Learning to Dress 3D People from Images** paper in documents and papers that report on research using this Software.
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. You agree to cite the **Multi-Garment Net: Learning to Dress 3D People from Images** paper in documents and papers that report on research using this Software.
 
 
 ### Shoutouts
 
 Chaitanya Patel: code for interpenetration removal, Thiemo Alldieck: code for texture/segmentation
 stitching and Verica Lazova: code for data anonymization.
+
+We thank Twindom and RenderPeople for providing data for the project. 
